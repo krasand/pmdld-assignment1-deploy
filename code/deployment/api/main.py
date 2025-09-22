@@ -12,7 +12,6 @@ model = joblib.load(MODEL_PATH)
 app = FastAPI(title="Wine Model API")
 
 class Features(BaseModel):
-    # словарь: имя_признака -> значение
     data: Dict[str, float]
 
 @app.get("/health")
@@ -24,4 +23,5 @@ def predict(payload: Features):
     names = load_wine().feature_names
     x = np.array([[payload.data.get(n, 0.0) for n in names]])
     y_pred = model.predict(x).tolist()[0]
+
     return {"prediction": int(y_pred)}
